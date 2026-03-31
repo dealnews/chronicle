@@ -15,6 +15,7 @@ Chronicle is a webhook-driven object history tracker. It ingests JSON payloads f
 - [Database Setup](#database-setup)
 - [Configuration](#configuration)
 - [Running the App](#running-the-app)
+- [Running with Docker](#running-with-docker)
 - [Ingesting Webhooks](#ingesting-webhooks)
 - [Plugin System](#plugin-system)
 - [Admin UI](#admin-ui)
@@ -135,6 +136,41 @@ Chronicle is a standard PHP web application. Point your web server's document ro
 ```bash
 php -S localhost:8001 -t public public/index.php
 ```
+
+## Running with Docker
+
+The official image is [`dealnews/chronicle`](https://hub.docker.com/r/dealnews/chronicle) on Docker Hub. The application listens on port 80 inside the container and expects `config.ini` to be provided at `/app/etc/config.ini`.
+
+**docker run:**
+
+```bash
+docker run -d \
+  -p 8000:80 \
+  -v /path/to/your/config.ini:/app/etc/config.ini:ro \
+  dealnews/chronicle:latest
+```
+
+**Docker Compose:**
+
+A `docker-compose.yml` is included at the root of this repository:
+
+```yaml
+services:
+  chronicle:
+    image: dealnews/chronicle:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - ./etc/config.ini:/app/etc/config.ini:ro
+```
+
+Copy `etc/config.example.ini` to `etc/config.ini`, fill in your database connection details, then start the container:
+
+```bash
+docker compose up -d
+```
+
+The application will be available at `http://localhost:8000`.
 
 ## Ingesting Webhooks
 

@@ -1,0 +1,7 @@
+services:
+  chronicle:
+    image: dealnews/chronicle:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - ./etc/config.ini:/app/etc/config.ini:ro

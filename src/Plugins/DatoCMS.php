@@ -44,10 +44,10 @@ class DatoCMS extends AbstractPlugin {
     /**
      * Returns the event timestamp from the payload.
      *
-     * @return string
+     * @return string|null
      */
-    public function getChangeDate(): string {
-        return $this->payload['event_triggered_at'];
+    public function getChangeDate(): ?string {
+        return $this->payload['event_triggered_at'] ?? null;
     }
 
     /**

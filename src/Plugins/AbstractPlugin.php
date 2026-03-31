@@ -150,11 +150,13 @@ abstract class AbstractPlugin {
     abstract public function getData(): array;
 
     /**
-     * Returns the datetime string representing when the change occurred.
+     * Returns the datetime string representing when the change occurred, or
+     * null if the payload does not contain a change date. When null is
+     * returned, the ingestion layer will fall back to the current UTC time.
      *
-     * @return string
+     * @return string|null
      */
-    abstract public function getChangeDate(): string;
+    abstract public function getChangeDate(): ?string;
 
     /**
      * Returns an identifier for who made the change, or null if not available.

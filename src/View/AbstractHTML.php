@@ -2,7 +2,11 @@
 
 namespace DealNews\Chronicle\View;
 
+use DateTimeImmutable;
+use DateTimeZone;
+use DealNews\GetConfig\GetConfig;
 use PageMill\MVC\Template\HTMLAbstract;
+use Throwable;
 
 /**
  * Shared HTML layout for all server-rendered pages.
@@ -21,6 +25,13 @@ abstract class AbstractHTML extends HTMLAbstract {
      * @var string
      */
     protected string $page_title = 'Chronicle';
+
+    /**
+     * Cached timezone instance for date formatting.
+     *
+     * @var DateTimeZone|null
+     */
+    protected ?DateTimeZone $timezone = null;
 
     /**
      * Errors to display in the error banner.
@@ -82,6 +93,38 @@ abstract class AbstractHTML extends HTMLAbstract {
             }
             echo '</ul></div>';
         }
+    }
+
+    /**
+     * Returns the configured timezone, lazily initialised from config.
+     *
+     * @return DateTimeZone
+     */
+    protected function getTimezone(): DateTimeZone {
+        if ($this->timezone === null) {
+            $tz_name        = GetConfig::init()->get('chronicle.timezone') ?? 'UTC';
+            $this->timezone = new DateTimeZone($tz_name);
+        }
+
+        return $this->timezone;
+    }
+
+    /**
+     * Formats a stored UTC date string for display in the configured timezone,
+     * appending the timezone abbreviation (e.g. "2024-01-15 05:30:00 EST").
+     * Falls back to the raw string if parsing fails.
+     *
+     * @param  string $date_string Stored date in Y-m-d H:i:s UTC.
+     * @return string
+     */
+    protected function formatDate(string $date_string): string {
+        try {
+            $dt = new DateTimeImmutable($date_string, new DateTimeZone('UTC'));
+        } catch (Throwable) {
+            return $date_string;
+        }
+
+        return $dt->setTimezone($this->getTimezone())->format('Y-m-d H:i:s T');
     }
 
     /**

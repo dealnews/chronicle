@@ -73,7 +73,7 @@ class LogDetail extends AbstractHTML {
         <section class="log-entry log-entry--<?= htmlspecialchars($log->action) ?>">
             <header class="log-entry__header">
                 <span class="log-entry__action"><?= htmlspecialchars($log->action) ?></span>
-                <span class="log-entry__date"><?= htmlspecialchars($log->change_date) ?></span>
+                <span class="log-entry__date"><?= htmlspecialchars($this->formatDate($log->change_date)) ?></span>
                 <?php if ($log->updated_by !== null): ?>
                     <span class="log-entry__author">by <?= htmlspecialchars($log->updated_by) ?></span>
                 <?php endif; ?>

@@ -40,8 +40,9 @@ class Type extends AbstractMapper {
         'created_at' => [
             'read_only' => true,
         ],
-        'name'       => [],
-        'plugin'     => [],
+        'name'        => [],
+        'description' => [],
+        'plugin'      => [],
         'source_id'  => [],
         'type_id'    => [],
         'updated_at' => [

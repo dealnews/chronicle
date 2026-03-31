@@ -1,10 +1,11 @@
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE sources (
-    source_id  INTEGER PRIMARY KEY AUTOINCREMENT,
-    name       TEXT DEFAULT NULL,
-    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now')),
-    updated_at TEXT DEFAULT NULL,
+    source_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now')),
+    updated_at  TEXT DEFAULT NULL,
     UNIQUE (name)
 );
 
@@ -16,12 +17,13 @@ CREATE TRIGGER sources_updated_at
     END;
 
 CREATE TABLE types (
-    type_id    INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_id  INTEGER NOT NULL,
-    name       TEXT NOT NULL,
-    plugin     TEXT DEFAULT NULL,
-    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now')),
-    updated_at TEXT DEFAULT NULL,
+    type_id     INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_id   INTEGER NOT NULL,
+    name        TEXT NOT NULL,
+    description TEXT DEFAULT NULL,
+    plugin      TEXT DEFAULT NULL,
+    created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now')),
+    updated_at  TEXT DEFAULT NULL,
     UNIQUE (source_id, name)
 );
 
@@ -81,4 +83,4 @@ CREATE TABLE logs (
     created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now'))
 );
 
-CREATE INDEX object_diffs ON logs (object_id, change_date);
+CREATE INDEX object_diffs ON logs (type_id, object_id, change_date);

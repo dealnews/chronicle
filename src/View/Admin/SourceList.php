@@ -45,26 +45,33 @@ class SourceList extends AbstractHTML {
         ?>
 <h1>Sources</h1>
 
-<form method="POST" action="<?= $form_action ?>">
+<form method="POST" action="<?= $form_action ?>" class="form--stacked">
     <?= $this->csrfField() ?>
     <div class="field">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" required
                value="<?= $editing ? htmlspecialchars($this->edit_source->name) : '' ?>">
     </div>
-    <button type="submit"><?= $editing ? 'Save Changes' : 'Add Source' ?></button>
+    <div class="field">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="3"><?= $editing ? htmlspecialchars((string) $this->edit_source->description) : '' ?></textarea>
+    </div>
+    <div class="form-actions">
+        <button type="submit"><?= $editing ? 'Save Changes' : 'Add Source' ?></button>
 <?php if ($editing): ?>
-    <a href="/admin/sources" class="btn btn-text">Cancel</a>
+        <a href="/admin/sources" class="btn btn-text">Cancel</a>
 <?php endif; ?>
+    </div>
 </form>
 
 <?php if (empty($this->sources)): ?>
     <p>No sources configured yet.</p>
 <?php else: ?>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Created</th>
                 <th></th>
             </tr>
@@ -73,6 +80,7 @@ class SourceList extends AbstractHTML {
 <?php foreach ($this->sources as $source): ?>
             <tr>
                 <td><?= htmlspecialchars($source->name) ?></td>
+                <td><?= $source->description !== null ? htmlspecialchars($source->description) : '&mdash;' ?></td>
                 <td><?= htmlspecialchars($source->created_at) ?></td>
                 <td class="row-actions">
                     <a href="/admin/sources/<?= $source->source_id ?>" class="btn btn-text">Edit</a>
@@ -88,7 +96,7 @@ class SourceList extends AbstractHTML {
             </tr>
 <?php endforeach; ?>
         </tbody>
-    </table>
+    </table></div>
 <?php endif; ?>
 <?php
     }

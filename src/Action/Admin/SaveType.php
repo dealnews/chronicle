@@ -26,6 +26,13 @@ class SaveType extends AbstractCsrfAction {
     protected string $name = '';
 
     /**
+     * Type description from POST body.
+     *
+     * @var string
+     */
+    protected string $description = '';
+
+    /**
      * Short plugin class name from POST body.
      *
      * @var string
@@ -82,10 +89,11 @@ class SaveType extends AbstractCsrfAction {
             return null;
         }
 
-        $type            = new Type();
-        $type->name      = $this->name;
-        $type->plugin    = $this->plugin;
-        $type->source_id = $this->source_id;
+        $type              = new Type();
+        $type->name        = $this->name;
+        $type->description = $this->description !== '' ? $this->description : null;
+        $type->plugin      = $this->plugin;
+        $type->source_id   = $this->source_id;
 
         $mapper->save($type);
 
@@ -111,9 +119,10 @@ class SaveType extends AbstractCsrfAction {
             return null;
         }
 
-        $type->name      = $this->name;
-        $type->plugin    = $this->plugin;
-        $type->source_id = $this->source_id;
+        $type->name        = $this->name;
+        $type->description = $this->description !== '' ? $this->description : null;
+        $type->plugin      = $this->plugin;
+        $type->source_id   = $this->source_id;
 
         $mapper->save($type);
 

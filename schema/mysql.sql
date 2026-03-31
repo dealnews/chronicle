@@ -1,19 +1,21 @@
 CREATE TABLE `sources` (
-    `source_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) DEFAULT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `source_id`   bigint unsigned NOT NULL AUTO_INCREMENT,
+    `name`        varchar(255) DEFAULT NULL,
+    `description` text DEFAULT NULL,
+    `created_at`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`  datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`source_id`),
     UNIQUE KEY `name` (`name`)
 );
 
 CREATE TABLE `types` (
-    `type_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-    `source_id` bigint unsigned NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `plugin` varchar(100) DEFAULT NULL,
-    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `type_id`     bigint unsigned NOT NULL AUTO_INCREMENT,
+    `source_id`   bigint unsigned NOT NULL,
+    `name`        varchar(255) NOT NULL,
+    `description` text DEFAULT NULL,
+    `plugin`      varchar(100) DEFAULT NULL,
+    `created_at`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`  datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`type_id`),
     UNIQUE KEY `type_name` (`source_id`,`name`)
 );
@@ -60,5 +62,5 @@ CREATE TABLE `logs` (
     `updated_by` varchar(255) DEFAULT NULL,
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`log_id`),
-    KEY `object_diffs` (`object_id`,`change_date`)
+    KEY `object_diffs` (`type_id`,`object_id`,`change_date`)
 );

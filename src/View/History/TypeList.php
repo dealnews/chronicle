@@ -49,11 +49,11 @@ class TypeList extends AbstractHTML {
 <?php if (empty($this->types)): ?>
     <p>No types configured for this source. <a href="/admin/types">Add one</a>.</p>
 <?php else: ?>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Created</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
@@ -64,11 +64,11 @@ class TypeList extends AbstractHTML {
                         <?= htmlspecialchars($type->name) ?>
                     </a>
                 </td>
-                <td><?= htmlspecialchars($type->created_at) ?></td>
+                <td><?= $type->description !== null ? htmlspecialchars($type->description) : '' ?></td>
             </tr>
 <?php endforeach; ?>
         </tbody>
-    </table>
+    </table></div>
 <?php endif; ?>
 <?php
     }

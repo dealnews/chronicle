@@ -1,8 +1,9 @@
 CREATE TABLE sources (
-    source_id  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name       VARCHAR(255) DEFAULT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT NULL,
+    source_id   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name        VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT NULL,
     UNIQUE (name)
 );
 
@@ -19,12 +20,13 @@ CREATE TRIGGER sources_updated_at
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 CREATE TABLE types (
-    type_id    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    source_id  BIGINT NOT NULL,
-    name       VARCHAR(255) NOT NULL,
-    plugin     VARCHAR(100) DEFAULT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT NULL,
+    type_id     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    source_id   BIGINT NOT NULL,
+    name        VARCHAR(255) NOT NULL,
+    description TEXT DEFAULT NULL,
+    plugin      VARCHAR(100) DEFAULT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT NULL,
     UNIQUE (source_id, name)
 );
 
@@ -78,4 +80,4 @@ CREATE TABLE logs (
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX object_diffs ON logs (object_id, change_date);
+CREATE INDEX object_diffs ON logs (type_id, object_id, change_date);

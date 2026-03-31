@@ -33,22 +33,22 @@ class SourceList extends AbstractHTML {
 <?php if (empty($this->sources)): ?>
     <p>No sources configured. <a href="/admin/sources">Add one</a>.</p>
 <?php else: ?>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Created</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
 <?php foreach ($this->sources as $source): ?>
             <tr>
                 <td><a href="/<?= htmlspecialchars($source->name) ?>"><?= htmlspecialchars($source->name) ?></a></td>
-                <td><?= htmlspecialchars($source->created_at) ?></td>
+                <td><?= $source->description !== null ? htmlspecialchars($source->description) : '' ?></td>
             </tr>
 <?php endforeach; ?>
         </tbody>
-    </table>
+    </table></div>
 <?php endif; ?>
 <?php
     }

@@ -65,6 +65,7 @@ abstract class AbstractHTML extends HTMLAbstract {
         <span></span><span></span><span></span>
     </button>
     <span class="nav-links">
+        <a href="/">Logs</a>
         <a href="/admin/sources">Sources</a>
         <a href="/admin/types">Types</a>
         <a href="/admin/api-keys">API Keys</a>
@@ -102,7 +103,7 @@ abstract class AbstractHTML extends HTMLAbstract {
         ?>
 </main>
 <footer>
-    <p>Chronicle &mdash; &copy; DealNews</p>
+    <p>Chronicle &mdash; &copy; <a href="https://www.dealnews.com/">DealNews</a></p>
 </footer>
 </body>
 </html>

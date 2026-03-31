@@ -52,7 +52,7 @@ class TypeList extends AbstractHTML {
         ?>
 <h1>Types</h1>
 
-<form method="POST" action="<?= $form_action ?>">
+<form method="POST" action="<?= $form_action ?>" class="form--stacked">
     <?= $this->csrfField() ?>
     <div class="field">
         <label for="source_id">Source</label>
@@ -83,21 +83,28 @@ class TypeList extends AbstractHTML {
 <?php endforeach; ?>
         </select>
     </div>
-    <button type="submit"><?= $editing ? 'Save Changes' : 'Add Type' ?></button>
+    <div class="field">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="3"><?= $editing ? htmlspecialchars((string) $this->edit_type->description) : '' ?></textarea>
+    </div>
+    <div class="form-actions">
+        <button type="submit"><?= $editing ? 'Save Changes' : 'Add Type' ?></button>
 <?php if ($editing): ?>
-    <a href="/admin/types" class="btn btn-text">Cancel</a>
+        <a href="/admin/types" class="btn btn-text">Cancel</a>
 <?php endif; ?>
+    </div>
 </form>
 
 <?php if (empty($this->types)): ?>
     <p>No types configured yet.</p>
 <?php else: ?>
     <?php $source_map = $this->buildSourceMap(); ?>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr>
                 <th>Source</th>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Plugin</th>
                 <th>Created</th>
                 <th></th>
@@ -108,6 +115,7 @@ class TypeList extends AbstractHTML {
             <tr>
                 <td><?= htmlspecialchars($source_map[$type->source_id] ?? '—') ?></td>
                 <td><?= htmlspecialchars($type->name) ?></td>
+                <td><?= $type->description !== null ? htmlspecialchars($type->description) : '&mdash;' ?></td>
                 <td><?= $type->plugin !== null ? htmlspecialchars($type->plugin) : '—' ?></td>
                 <td><?= htmlspecialchars($type->created_at) ?></td>
                 <td class="row-actions">
@@ -124,7 +132,7 @@ class TypeList extends AbstractHTML {
             </tr>
 <?php endforeach; ?>
         </tbody>
-    </table>
+    </table></div>
 <?php endif; ?>
 <?php
     }

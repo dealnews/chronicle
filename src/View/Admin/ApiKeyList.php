@@ -60,7 +60,7 @@ class ApiKeyList extends AbstractHTML {
 <?php if (empty($this->api_keys)): ?>
     <p>No API keys created yet.</p>
 <?php else: ?>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr>
                 <th>Label</th>
@@ -86,7 +86,7 @@ class ApiKeyList extends AbstractHTML {
             </tr>
 <?php endforeach; ?>
         </tbody>
-    </table>
+    </table></div>
 <?php endif; ?>
 <?php
     }

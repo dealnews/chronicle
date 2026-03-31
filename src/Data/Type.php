@@ -22,6 +22,11 @@ class Type extends ValueObject {
     public string $name = '';
 
     /**
+     * @var ?string
+     */
+    public ?string $description = null;
+
+    /**
      * Short class name of the plugin used to parse incoming payloads,
      * or null if no plugin is configured.
      *

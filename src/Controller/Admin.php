@@ -39,6 +39,7 @@ class Admin extends AbstractAuthenticated {
         parent::filterInput([
             INPUT_POST => [
                 'name'        => FILTER_DEFAULT,
+                'description' => FILTER_DEFAULT,
                 'email'       => FILTER_SANITIZE_EMAIL,
                 'password'    => FILTER_DEFAULT,
                 'plugin'      => FILTER_DEFAULT,

@@ -25,6 +25,13 @@ class SaveSource extends AbstractCsrfAction {
     protected string $name = '';
 
     /**
+     * Source description from POST body.
+     *
+     * @var string
+     */
+    protected string $description = '';
+
+    /**
      * Source ID parsed from the URL path (> 0 triggers update or delete).
      *
      * @var int
@@ -66,8 +73,9 @@ class SaveSource extends AbstractCsrfAction {
             return null;
         }
 
-        $source       = new Source();
-        $source->name = $this->name;
+        $source              = new Source();
+        $source->name        = $this->name;
+        $source->description = $this->description !== '' ? $this->description : null;
 
         $mapper->save($source);
 
@@ -92,7 +100,8 @@ class SaveSource extends AbstractCsrfAction {
             return null;
         }
 
-        $source->name = $this->name;
+        $source->name        = $this->name;
+        $source->description = $this->description !== '' ? $this->description : null;
         $mapper->save($source);
 
         header('Location: /admin/sources');

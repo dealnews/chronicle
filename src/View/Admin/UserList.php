@@ -45,7 +45,7 @@ class UserList extends AbstractHTML {
         ?>
 <h1>Users</h1>
 
-<form method="POST" action="<?= $form_action ?>">
+<form method="POST" action="<?= $form_action ?>" class="form--stacked">
     <?= $this->csrfField() ?>
     <div class="field">
         <label for="email">Email</label>
@@ -66,16 +66,18 @@ class UserList extends AbstractHTML {
         <p class="field-hint">Leave blank to keep the existing password.</p>
 <?php endif; ?>
     </div>
-    <button type="submit"><?= $editing ? 'Save Changes' : 'Add User' ?></button>
+    <div class="form-actions">
+        <button type="submit"><?= $editing ? 'Save Changes' : 'Add User' ?></button>
 <?php if ($editing): ?>
-    <a href="/admin/users" class="btn btn-text">Cancel</a>
+        <a href="/admin/users" class="btn btn-text">Cancel</a>
 <?php endif; ?>
+    </div>
 </form>
 
 <?php if (empty($this->users)): ?>
     <p>No users configured yet.</p>
 <?php else: ?>
-    <table>
+    <div class="table-wrap"><table>
         <thead>
             <tr>
                 <th>Email</th>
@@ -106,7 +108,7 @@ class UserList extends AbstractHTML {
             </tr>
 <?php endforeach; ?>
         </tbody>
-    </table>
+    </table></div>
 <?php endif; ?>
 <?php
     }

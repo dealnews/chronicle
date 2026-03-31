@@ -22,6 +22,11 @@ class Source extends ValueObject {
     public ?string $name = null;
 
     /**
+     * @var ?string
+     */
+    public ?string $description = null;
+
+    /**
      * @var int
      */
     public int $source_id = 0;

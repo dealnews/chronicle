@@ -37,12 +37,13 @@ class Source extends AbstractMapper {
      * additional information needed to map them.
      */
     public const MAPPING = [
-        'created_at' => [
+        'created_at'  => [
             'read_only' => true,
         ],
-        'name'       => [],
-        'source_id'  => [],
-        'updated_at' => [
+        'name'        => [],
+        'description' => [],
+        'source_id'   => [],
+        'updated_at'  => [
             'read_only' => true,
         ],
     ];

@@ -87,10 +87,15 @@ db.chronicle.dsn  = "sqlite:/path/to/dev.db"
 To enable Google login, add:
 
 ```ini
-google.oauth.client_id     = your-client-id
-google.oauth.client_secret = your-client-secret
-google.oauth.redirect_uri  = https://your-app/auth/google/callback
+chronicle.google.client_id      = your-client-id
+chronicle.google.client_secret  = your-client-secret
+chronicle.google.redirect_uri   = https://your-app/auth/callback
+
+; Optional: restrict login to specific domains (comma-separated)
+chronicle.google.allowed_domains = dealnews.com,example.com
 ```
+
+When `allowed_domains` is set, any Google account whose email domain is not in the list will be rejected after authentication. When the key is absent, all Google accounts are permitted.
 
 ### External Plugins (optional)
 

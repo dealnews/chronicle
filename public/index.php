@@ -62,6 +62,14 @@ $router = new Router([
         'action'  => Auth::class,
     ],
 
+    // Logout
+    [
+        'type'    => 'exact',
+        'pattern' => '/auth/logout',
+        'method'  => 'GET',
+        'action'  => Auth::class,
+    ],
+
     // Admin UI — sources, types, API keys (session required)
     [
         'type'    => 'starts_with',

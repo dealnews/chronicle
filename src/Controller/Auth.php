@@ -4,6 +4,7 @@ namespace DealNews\Chronicle\Controller;
 
 use DealNews\Chronicle\Action\CreateFirstUser;
 use DealNews\Chronicle\Action\GoogleOAuthCallback;
+use DealNews\Chronicle\Action\Logout;
 use DealNews\Chronicle\Action\PasswordLogin;
 use DealNews\Chronicle\Model\UserCount;
 use DealNews\Chronicle\Responder\Auth as AuthResponder;
@@ -35,8 +36,8 @@ class Auth extends ControllerAbstract {
 
         parent::filterInput([
             INPUT_GET => [
-                'code'  => FILTER_SANITIZE_ENCODED,
-                'state' => FILTER_SANITIZE_ENCODED,
+                'code'  => FILTER_DEFAULT,
+                'state' => FILTER_DEFAULT,
             ],
             INPUT_POST => [
                 'name'        => FILTER_DEFAULT,
@@ -61,6 +62,10 @@ class Auth extends ControllerAbstract {
      * @return array<int, class-string>
      */
     protected function getRequestActions(): array {
+        if ($this->request_path === '/auth/logout') {
+            return [Logout::class];
+        }
+
         if ($this->request_path === '/auth/callback') {
             return [GoogleOAuthCallback::class];
         }

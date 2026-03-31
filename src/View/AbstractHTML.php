@@ -58,10 +58,18 @@ abstract class AbstractHTML extends HTMLAbstract {
         <img src="/logo_white.svg" alt="" class="nav-logo">
         Chronicle
     </a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"
+            onclick="var l=document.querySelector('.nav-links');
+                     var open=l.classList.toggle('is-open');
+                     this.setAttribute('aria-expanded', open);">
+        <span></span><span></span><span></span>
+    </button>
     <span class="nav-links">
         <a href="/admin/sources">Sources</a>
         <a href="/admin/types">Types</a>
         <a href="/admin/api-keys">API Keys</a>
+        <a href="/admin/users">Users</a>
+        <a href="/auth/logout">Sign Out</a>
     </span>
 </nav>
 <main>

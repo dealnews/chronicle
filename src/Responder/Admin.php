@@ -6,6 +6,7 @@ use DealNews\Chronicle\View\Admin\ApiKeyList;
 use DealNews\Chronicle\View\Admin\Dashboard;
 use DealNews\Chronicle\View\Admin\SourceList;
 use DealNews\Chronicle\View\Admin\TypeList;
+use DealNews\Chronicle\View\Admin\UserList;
 use PageMill\HTTP\HTTP;
 use PageMill\MVC\ResponderAbstract;
 
@@ -36,6 +37,7 @@ class Admin extends ResponderAbstract {
             'sources'  => SourceList::class,
             'types'    => TypeList::class,
             'api-keys' => ApiKeyList::class,
+            'users'    => UserList::class,
             default    => Dashboard::class,
         };
     }

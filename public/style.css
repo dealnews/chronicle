@@ -201,6 +201,43 @@ nav > a:hover {
     text-decoration: none;
 }
 
+/* ─── Hamburger toggle (hidden on desktop) ───────────────────────────────── */
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: var(--space-2);
+    margin-left: auto;
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.nav-toggle:hover {
+    background-color: rgba(255,255,255,.12);
+    box-shadow: none;
+    opacity: 1;
+}
+
+.nav-toggle:focus-visible {
+    outline: 2px solid var(--color-on-primary);
+    outline-offset: 2px;
+}
+
+.nav-toggle span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: var(--color-on-primary);
+    border-radius: 2px;
+    transition: opacity 0.2s;
+}
+
 main {
     flex: 1;
     width: 100%;
@@ -715,12 +752,33 @@ tbody tr:hover td {
         -webkit-overflow-scrolling: touch;
     }
 
+    .nav-toggle {
+        display: flex;
+    }
+
     .nav-links {
+        display: none;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
         gap: 0;
+        margin-left: 0;
+        background-color: var(--color-primary);
+        box-shadow: var(--elevation-2);
+        z-index: 99;
+        padding: var(--space-2) 0;
+    }
+
+    .nav-links.is-open {
+        display: flex;
     }
 
     .nav-links a {
-        padding: var(--space-2);
-        font-size: var(--font-size-sm);
+        padding: var(--space-3) var(--space-6);
+        border-radius: 0;
+        font-size: var(--font-size-base);
     }
 }

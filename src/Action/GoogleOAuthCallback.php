@@ -59,7 +59,9 @@ class GoogleOAuthCallback extends ActionAbstract {
         $token = $this->fetchToken($client_id, $client_secret, $redirect_uri);
 
         if (empty($token['access_token'])) {
-            $this->errors[] = 'Failed to obtain access token from Google.';
+            $detail = $token['error_description'] ?? $token['error'] ?? null;
+            $this->errors[] = 'Failed to obtain access token from Google.' .
+                ($detail !== null ? ' Google said: ' . $detail : '');
             return null;
         }
 
@@ -67,6 +69,11 @@ class GoogleOAuthCallback extends ActionAbstract {
 
         if (empty($profile['sub']) || empty($profile['email'])) {
             $this->errors[] = 'Failed to retrieve user profile from Google.';
+            return null;
+        }
+
+        if (!$this->isAllowedEmail($profile['email'], $config)) {
+            $this->errors[] = 'Your account is not authorized to access this application.';
             return null;
         }
 
@@ -101,9 +108,10 @@ class GoogleOAuthCallback extends ActionAbstract {
 
         $context = stream_context_create([
             'http' => [
-                'method'  => 'POST',
-                'header'  => 'Content-Type: application/x-www-form-urlencoded',
-                'content' => $post_data,
+                'method'        => 'POST',
+                'header'        => 'Content-Type: application/x-www-form-urlencoded',
+                'content'       => $post_data,
+                'ignore_errors' => true,
             ],
         ]);
 
@@ -145,6 +153,30 @@ class GoogleOAuthCallback extends ActionAbstract {
         }
 
         return json_decode($response, true) ?? [];
+    }
+
+    /**
+     * Returns true if the email is permitted to log in.
+     *
+     * When chronicle.google.allowed_domains is set, the email's domain must
+     * appear in the comma-separated list. When the config key is absent or
+     * empty, all Google accounts are allowed.
+     *
+     * @param  string    $email
+     * @param  GetConfig $config
+     * @return bool
+     */
+    protected function isAllowedEmail(string $email, GetConfig $config): bool {
+        $allowed = $config->get('chronicle.google.allowed_domains');
+
+        if (empty($allowed)) {
+            return true;
+        }
+
+        $domain  = substr($email, strrpos($email, '@') + 1);
+        $domains = array_map('trim', explode(',', $allowed));
+
+        return in_array($domain, $domains, true);
     }
 
     /**

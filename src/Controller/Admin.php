@@ -5,20 +5,24 @@ namespace DealNews\Chronicle\Controller;
 use DealNews\Chronicle\Action\Admin\SaveApiKey;
 use DealNews\Chronicle\Action\Admin\SaveSource;
 use DealNews\Chronicle\Action\Admin\SaveType;
+use DealNews\Chronicle\Action\Admin\SaveUser;
 use DealNews\Chronicle\Model\Admin\ApiKeyList;
 use DealNews\Chronicle\Model\Admin\SourceList;
 use DealNews\Chronicle\Model\Admin\TypeList;
+use DealNews\Chronicle\Model\Admin\UserList;
 use DealNews\Chronicle\Responder\Admin as AdminResponder;
 use PageMill\MVC\ResponderAbstract;
 
 /**
- * Handles admin CRUD routes for sources, types, and API keys.
+ * Handles admin CRUD routes for sources, types, API keys, and users.
  *
  * The sub-page is derived from the request path:
  *   GET/POST /admin/sources       - List and create sources.
  *   GET/POST /admin/types         - List and create types.
  *   GET/POST /admin/api-keys      - List and create API keys.
  *   DELETE   /admin/api-keys/{id} - Revoke an API key.
+ *   GET/POST /admin/users         - List and create users.
+ *   GET/POST /admin/users/{id}    - Edit or delete a user.
  *
  * @package DealNews\Chronicle
  */
@@ -35,6 +39,8 @@ class Admin extends AbstractAuthenticated {
         parent::filterInput([
             INPUT_POST => [
                 'name'        => FILTER_DEFAULT,
+                'email'       => FILTER_SANITIZE_EMAIL,
+                'password'    => FILTER_DEFAULT,
                 'plugin'      => FILTER_DEFAULT,
                 'source_id'   => FILTER_VALIDATE_INT,
                 '_delete'     => FILTER_DEFAULT,
@@ -72,6 +78,7 @@ class Admin extends AbstractAuthenticated {
                 'sources'  => [SaveSource::class],
                 'types'    => [SaveType::class],
                 'api-keys' => [SaveApiKey::class],
+                'users'    => [SaveUser::class],
                 default    => [],
             };
         }
@@ -89,6 +96,7 @@ class Admin extends AbstractAuthenticated {
             'sources'  => [SourceList::class],
             'types'    => [TypeList::class],
             'api-keys' => [ApiKeyList::class],
+            'users'    => [UserList::class],
             default    => [],
         };
     }

@@ -59,7 +59,7 @@ class CreateFirstUser extends AbstractCsrfAction {
 
         // Re-check inside the action so this cannot be called once users exist.
         $crud  = CRUD::factory('chronicle');
-        $sth   = $crud->run('SELECT COUNT(*) FROM users');
+        $sth   = $crud->run('SELECT COUNT(*) FROM chronicle_users');
         $count = (int) $sth->fetchColumn();
 
         if ($count > 0) {

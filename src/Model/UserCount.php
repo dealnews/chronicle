@@ -20,7 +20,7 @@ class UserCount extends ModelAbstract {
      */
     public function getData(): array {
         $crud  = CRUD::factory('chronicle');
-        $sth   = $crud->run('SELECT COUNT(*) FROM users');
+        $sth   = $crud->run('SELECT COUNT(*) FROM chronicle_users');
         $count = (int) $sth->fetchColumn();
 
         return ['user_count' => $count];

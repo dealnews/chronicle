@@ -1,0 +1,29 @@
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# PHPUnit
+.phpunit.cache/
+phpunit.xml.local
+.phpunit.result.cache
+
+# Composer
+vendor/
+
+# Environment and Configuration
+.env
+etc/config.ini
+/.dev
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp

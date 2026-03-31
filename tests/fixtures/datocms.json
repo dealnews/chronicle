@@ -1,0 +1,173 @@
+{
+  "attempted_auto_retries_count": 0,
+  "entity": {
+    "attributes": {
+      "active_status": "Yes",
+      "aliases": "",
+      "created_at": "2026-03-30T15:12:08.680-04:00",
+      "exclusive_vendor": false,
+      "hidden": false,
+      "legacy_id": null,
+      "logo": null,
+      "name": "FooBar",
+      "products": null,
+      "short_name": "FooBar",
+      "updated_at": "2026-03-30T15:12:08.688-04:00",
+      "vendor": null
+    },
+    "id": "N479d1CxTHSglNDxVSrICg",
+    "meta": {
+      "created_at": "2026-03-30T15:12:08.680-04:00",
+      "current_version": "Yq8xFAcuTcWR026M4X7Tow",
+      "first_published_at": "2026-03-30T15:12:08.717-04:00",
+      "has_children": null,
+      "is_current_version_valid": true,
+      "is_published_version_valid": true,
+      "is_valid": true,
+      "publication_scheduled_at": null,
+      "published_at": "2026-03-30T15:12:08.717-04:00",
+      "stage": null,
+      "status": "published",
+      "unpublishing_scheduled_at": null,
+      "updated_at": "2026-03-30T15:12:08.688-04:00"
+    },
+    "relationships": {
+      "creator": {
+        "data": {
+          "id": "38248",
+          "type": "user"
+        }
+      },
+      "item_type": {
+        "data": {
+          "id": "2000421",
+          "type": "item_type"
+        }
+      }
+    },
+    "type": "item"
+  },
+  "entity_type": "item",
+  "environment": "happy-rhino-2026-01-18",
+  "event_triggered_at": "2026-03-30T19:12:08Z",
+  "event_type": "publish",
+  "is_environment_primary": false,
+  "related_entities": [
+    {
+      "attributes": {
+        "all_locales_required": false,
+        "api_key": "brand",
+        "collection_appearance": "table",
+        "collection_appeareance": "table",
+        "draft_mode_active": false,
+        "draft_saving_active": false,
+        "has_singleton_item": false,
+        "hint": null,
+        "inverse_relationships_enabled": false,
+        "modular_block": false,
+        "name": "Brand",
+        "ordering_direction": "asc",
+        "ordering_meta": null,
+        "singleton": false,
+        "sortable": false,
+        "tree": false
+      },
+      "id": "2000421",
+      "meta": {
+        "has_singleton_item": false
+      },
+      "relationships": {
+        "excerpt_field": {
+          "data": null
+        },
+        "fields": {
+          "data": [
+            {
+              "id": "10157632",
+              "type": "field"
+            },
+            {
+              "id": "10157633",
+              "type": "field"
+            },
+            {
+              "id": "10434739",
+              "type": "field"
+            },
+            {
+              "id": "10157634",
+              "type": "field"
+            },
+            {
+              "id": "10434743",
+              "type": "field"
+            },
+            {
+              "id": "10434741",
+              "type": "field"
+            },
+            {
+              "id": "XGAzMLy9TTC9l1WfyoI_sQ",
+              "type": "field"
+            },
+            {
+              "id": "10434740",
+              "type": "field"
+            },
+            {
+              "id": "10434742",
+              "type": "field"
+            },
+            {
+              "id": "10413115",
+              "type": "field"
+            }
+          ]
+        },
+        "fieldsets": {
+          "data": []
+        },
+        "image_preview_field": {
+          "data": {
+            "id": "10157634",
+            "type": "field"
+          }
+        },
+        "ordering_field": {
+          "data": {
+            "id": "10157632",
+            "type": "field"
+          }
+        },
+        "presentation_image_field": {
+          "data": {
+            "id": "10157634",
+            "type": "field"
+          }
+        },
+        "presentation_title_field": {
+          "data": {
+            "id": "10157632",
+            "type": "field"
+          }
+        },
+        "singleton_item": {
+          "data": null
+        },
+        "title_field": {
+          "data": {
+            "id": "10157632",
+            "type": "field"
+          }
+        },
+        "workflow": {
+          "data": null
+        }
+      },
+      "type": "item_type"
+    }
+  ],
+  "site_id": "64599",
+  "webhook_call_id": "209509189",
+  "webhook_id": "32613"
+}

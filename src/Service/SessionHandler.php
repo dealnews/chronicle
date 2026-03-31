@@ -8,7 +8,7 @@ use SessionHandlerInterface;
 /**
  * Database-backed PHP session handler.
  *
- * Stores sessions in the chronicle.sessions table so the application
+ * Stores sessions in the chronicle.chronicle_sessions table so the application
  * can run on multiple hosts simultaneously without shared filesystem state.
  *
  * Register before any session_start() call:
@@ -23,7 +23,7 @@ class SessionHandler implements SessionHandlerInterface {
     /**
      * Database table name.
      */
-    protected const TABLE = 'sessions';
+    protected const TABLE = 'chronicle_sessions';
 
     /**
      * @var CRUD
@@ -115,7 +115,7 @@ class SessionHandler implements SessionHandlerInterface {
         $expires = date('Y-m-d H:i:s', time() - $max_lifetime);
 
         $sth = $this->crud->run(
-            'DELETE FROM sessions WHERE updated_at < :expires',
+            'DELETE FROM chronicle_sessions WHERE updated_at < :expires',
             [':expires' => $expires]
         );
 

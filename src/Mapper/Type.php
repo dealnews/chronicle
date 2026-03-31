@@ -6,7 +6,7 @@ use DealNews\Chronicle\Data\Type as TypeData;
 use DealNews\DB\AbstractMapper;
 
 /**
- * Maps Data\Type objects to the chronicle.types table.
+ * Maps Data\Type objects to the chronicle.chronicle_types table.
  *
  * @package DealNews\Chronicle
  */
@@ -20,7 +20,7 @@ class Type extends AbstractMapper {
     /**
      * Table name
      */
-    public const TABLE = 'types';
+    public const TABLE = 'chronicle_types';
 
     /**
      * Table primary key column name

@@ -6,7 +6,7 @@ use DealNews\Chronicle\Data\Log as LogData;
 use DealNews\DB\AbstractMapper;
 
 /**
- * Maps Data\Log objects to the chronicle.logs table.
+ * Maps Data\Log objects to the chronicle.chronicle_logs table.
  *
  * @package DealNews\Chronicle
  */
@@ -20,7 +20,7 @@ class Log extends AbstractMapper {
     /**
      * Table name
      */
-    public const TABLE = 'logs';
+    public const TABLE = 'chronicle_logs';
 
     /**
      * Table primary key column name

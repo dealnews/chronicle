@@ -6,7 +6,7 @@ use DealNews\Chronicle\Data\Source as SourceData;
 use DealNews\DB\AbstractMapper;
 
 /**
- * Maps Data\Source objects to the chronicle.sources table.
+ * Maps Data\Source objects to the chronicle.chronicle_sources table.
  *
  * @package DealNews\Chronicle
  */
@@ -20,7 +20,7 @@ class Source extends AbstractMapper {
     /**
      * Table name
      */
-    public const TABLE = 'sources';
+    public const TABLE = 'chronicle_sources';
 
     /**
      * Table primary key column name

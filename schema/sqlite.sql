@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 
-CREATE TABLE sources (
+CREATE TABLE chronicle_sources (
     source_id   INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT DEFAULT NULL,
     description TEXT DEFAULT NULL,
@@ -9,14 +9,14 @@ CREATE TABLE sources (
     UNIQUE (name)
 );
 
-CREATE TRIGGER sources_updated_at
-    AFTER UPDATE ON sources
+CREATE TRIGGER chronicle_sources_updated_at
+    AFTER UPDATE ON chronicle_sources
     FOR EACH ROW BEGIN
-        UPDATE sources SET updated_at = strftime('%Y-%m-%d %H:%M:%S', 'now')
+        UPDATE chronicle_sources SET updated_at = strftime('%Y-%m-%d %H:%M:%S', 'now')
         WHERE source_id = OLD.source_id;
     END;
 
-CREATE TABLE types (
+CREATE TABLE chronicle_types (
     type_id     INTEGER PRIMARY KEY AUTOINCREMENT,
     source_id   INTEGER NOT NULL,
     name        TEXT NOT NULL,
@@ -27,30 +27,30 @@ CREATE TABLE types (
     UNIQUE (source_id, name)
 );
 
-CREATE TRIGGER types_updated_at
-    AFTER UPDATE ON types
+CREATE TRIGGER chronicle_types_updated_at
+    AFTER UPDATE ON chronicle_types
     FOR EACH ROW BEGIN
-        UPDATE types SET updated_at = strftime('%Y-%m-%d %H:%M:%S', 'now')
+        UPDATE chronicle_types SET updated_at = strftime('%Y-%m-%d %H:%M:%S', 'now')
         WHERE type_id = OLD.type_id;
     END;
 
-CREATE TABLE sessions (
+CREATE TABLE chronicle_sessions (
     session_id TEXT NOT NULL,
     data       TEXT,
     updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now')),
     PRIMARY KEY (session_id)
 );
 
-CREATE INDEX sessions_updated_at ON sessions (updated_at);
+CREATE INDEX chronicle_sessions_updated_at ON chronicle_sessions (updated_at);
 
-CREATE TRIGGER sessions_updated_at
-    AFTER UPDATE ON sessions
+CREATE TRIGGER chronicle_sessions_updated_at
+    AFTER UPDATE ON chronicle_sessions
     FOR EACH ROW BEGIN
-        UPDATE sessions SET updated_at = strftime('%Y-%m-%d %H:%M:%S', 'now')
+        UPDATE chronicle_sessions SET updated_at = strftime('%Y-%m-%d %H:%M:%S', 'now')
         WHERE session_id = OLD.session_id;
     END;
 
-CREATE TABLE api_keys (
+CREATE TABLE chronicle_api_keys (
     api_key_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name       TEXT NOT NULL,
     key_hash   TEXT NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE api_keys (
     UNIQUE (key_hash)
 );
 
-CREATE TABLE users (
+CREATE TABLE chronicle_users (
     user_id       INTEGER PRIMARY KEY AUTOINCREMENT,
     email         TEXT NOT NULL,
     name          TEXT DEFAULT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE users (
     UNIQUE (google_id)
 );
 
-CREATE TABLE logs (
+CREATE TABLE chronicle_logs (
     log_id      INTEGER PRIMARY KEY AUTOINCREMENT,
     type_id     INTEGER NOT NULL,
     action      TEXT NOT NULL DEFAULT 'create' CHECK (action IN ('create', 'update', 'delete')),
@@ -83,4 +83,4 @@ CREATE TABLE logs (
     created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now'))
 );
 
-CREATE INDEX object_diffs ON logs (type_id, object_id, change_date);
+CREATE INDEX object_diffs ON chronicle_logs (type_id, object_id, change_date);

@@ -6,7 +6,7 @@ use DealNews\Chronicle\Data\ApiKey as ApiKeyData;
 use DealNews\DB\AbstractMapper;
 
 /**
- * Maps Data\ApiKey objects to the chronicle.api_keys table.
+ * Maps Data\ApiKey objects to the chronicle.chronicle_api_keys table.
  *
  * @package DealNews\Chronicle
  */
@@ -20,7 +20,7 @@ class ApiKey extends AbstractMapper {
     /**
      * Table name
      */
-    public const TABLE = 'api_keys';
+    public const TABLE = 'chronicle_api_keys';
 
     /**
      * Table primary key column name

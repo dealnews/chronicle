@@ -6,7 +6,7 @@ use DealNews\Chronicle\Data\User as UserData;
 use DealNews\DB\AbstractMapper;
 
 /**
- * Maps Data\User objects to the chronicle.users table.
+ * Maps Data\User objects to the chronicle.chronicle_users table.
  *
  * @package DealNews\Chronicle
  */
@@ -20,7 +20,7 @@ class User extends AbstractMapper {
     /**
      * Table name
      */
-    public const TABLE = 'users';
+    public const TABLE = 'chronicle_users';
 
     /**
      * Table primary key column name

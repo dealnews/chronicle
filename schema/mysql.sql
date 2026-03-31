@@ -1,4 +1,4 @@
-CREATE TABLE `sources` (
+CREATE TABLE `chronicle_sources` (
     `source_id`   bigint unsigned NOT NULL AUTO_INCREMENT,
     `name`        varchar(255) DEFAULT NULL,
     `description` text DEFAULT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE `sources` (
     UNIQUE KEY `name` (`name`)
 );
 
-CREATE TABLE `types` (
+CREATE TABLE `chronicle_types` (
     `type_id`     bigint unsigned NOT NULL AUTO_INCREMENT,
     `source_id`   bigint unsigned NOT NULL,
     `name`        varchar(255) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE `types` (
     UNIQUE KEY `type_name` (`source_id`,`name`)
 );
 
-CREATE TABLE `sessions` (
+CREATE TABLE `chronicle_sessions` (
     `session_id` varchar(128) NOT NULL,
     `data`       longtext,
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -28,7 +28,7 @@ CREATE TABLE `sessions` (
     KEY `updated_at` (`updated_at`)
 );
 
-CREATE TABLE `api_keys` (
+CREATE TABLE `chronicle_api_keys` (
     `api_key_id` bigint unsigned NOT NULL AUTO_INCREMENT,
     `name`       varchar(255) NOT NULL,
     `key_hash`   varchar(64) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE `api_keys` (
     UNIQUE KEY `key_hash` (`key_hash`)
 );
 
-CREATE TABLE `users` (
+CREATE TABLE `chronicle_users` (
     `user_id`       bigint unsigned NOT NULL AUTO_INCREMENT,
     `email`         varchar(255) NOT NULL,
     `name`          varchar(255) DEFAULT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `users` (
     UNIQUE KEY `google_id` (`google_id`)
 );
 
-CREATE TABLE `logs` (
+CREATE TABLE `chronicle_logs` (
     `log_id` bigint unsigned NOT NULL AUTO_INCREMENT,
     `type_id` bigint unsigned NOT NULL,
     `action` enum('create','update','delete') NOT NULL DEFAULT 'create',

@@ -1,4 +1,4 @@
-CREATE TABLE sources (
+CREATE TABLE chronicle_sources (
     source_id   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name        VARCHAR(255) DEFAULT NULL,
     description TEXT DEFAULT NULL,
@@ -15,11 +15,11 @@ BEGIN
 END;
 $$;
 
-CREATE TRIGGER sources_updated_at
-    BEFORE UPDATE ON sources
+CREATE TRIGGER chronicle_sources_updated_at
+    BEFORE UPDATE ON chronicle_sources
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE types (
+CREATE TABLE chronicle_types (
     type_id     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     source_id   BIGINT NOT NULL,
     name        VARCHAR(255) NOT NULL,
@@ -30,24 +30,24 @@ CREATE TABLE types (
     UNIQUE (source_id, name)
 );
 
-CREATE TRIGGER types_updated_at
-    BEFORE UPDATE ON types
+CREATE TRIGGER chronicle_types_updated_at
+    BEFORE UPDATE ON chronicle_types
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE sessions (
+CREATE TABLE chronicle_sessions (
     session_id VARCHAR(128) NOT NULL,
     data       TEXT,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (session_id)
 );
 
-CREATE INDEX sessions_updated_at ON sessions (updated_at);
+CREATE INDEX chronicle_sessions_updated_at ON chronicle_sessions (updated_at);
 
-CREATE TRIGGER sessions_updated_at
-    BEFORE UPDATE ON sessions
+CREATE TRIGGER chronicle_sessions_updated_at
+    BEFORE UPDATE ON chronicle_sessions
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE api_keys (
+CREATE TABLE chronicle_api_keys (
     api_key_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name       VARCHAR(255) NOT NULL,
     key_hash   VARCHAR(64) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE api_keys (
     UNIQUE (key_hash)
 );
 
-CREATE TABLE users (
+CREATE TABLE chronicle_users (
     user_id       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     email         VARCHAR(255) NOT NULL,
     name          VARCHAR(255) DEFAULT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE users (
     UNIQUE (google_id)
 );
 
-CREATE TABLE logs (
+CREATE TABLE chronicle_logs (
     log_id      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     type_id     BIGINT NOT NULL,
     action      TEXT NOT NULL DEFAULT 'create' CHECK (action IN ('create', 'update', 'delete')),
@@ -80,4 +80,4 @@ CREATE TABLE logs (
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX object_diffs ON logs (type_id, object_id, change_date);
+CREATE INDEX object_diffs ON chronicle_logs (type_id, object_id, change_date);

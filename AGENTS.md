@@ -76,6 +76,49 @@ that directory. Each must declare `public const DESCRIPTION`.
 
 External plugins are registered via `chronicle.plugins` in `config.ini`.
 
+### Authentication & sessions
+
+- Sessions are DB-backed via `SessionHandler`, which stores data in the
+  `sessions` table. `session_set_save_handler()` is called in
+  `AbstractAuthenticated::filterInput()` and `Auth::filterInput()` — not in
+  `index.php` — so webhook requests never touch the session DB.
+- Login supports email/password (`PasswordLogin`) and Google OAuth
+  (`GoogleOAuthCallback`). OAuth state is stored in `$_SESSION['oauth_state']`
+  and validated with `hash_equals()` on callback.
+- `GoogleOAuthCallback` checks `chronicle.google.allowed_domains` (comma-separated)
+  before creating a session. Empty/absent = all Google accounts allowed.
+
+### CSRF protection
+
+All POST-handling actions extend `AbstractCsrfAction` rather than
+`ActionAbstract` directly. `AbstractCsrfAction::doAction()` validates
+`$_SESSION['csrf_token']` against the `_csrf_token` POST field using
+`hash_equals()`, then delegates to `doCsrfAction()`. Subclasses implement
+`doCsrfAction()`, not `doAction()`.
+
+```php
+class SaveSource extends AbstractCsrfAction {
+    protected function doCsrfAction(array $data = []): mixed {
+        // business logic here
+    }
+}
+```
+
+The CSRF token is initialised in `AbstractHTML::generateHeader()` and injected
+into forms via `$this->csrfField()`, which returns a hidden input element.
+
+### Admin section routing
+
+The `Admin` controller parses `admin_section` (first path segment after
+`/admin`) and `admin_id` (trailing numeric segment) from the request path.
+Adding a new admin page requires updating four places in the same commit:
+
+1. `Admin` controller — `getRequestActions()` and `getModels()` match arms
+2. `Admin` Responder — `getView()` match arm
+3. New `Model/Admin/`, `Action/Admin/`, `View/Admin/` classes
+
+Current sections: `sources`, `types`, `api-keys`, `users`.
+
 ---
 
 ## Coding Standards
@@ -205,6 +248,9 @@ vendor/bin/phpunit tests/Plugins/JsonPathTest.php
 
 # Start a local dev server (document root is public/)
 php -S localhost:8001 -t public public/index.php
+
+# Run with Docker
+docker compose up -d   # requires etc/config.ini to exist
 ```
 
 There is no separate linting step — style is enforced by code review.
@@ -256,6 +302,28 @@ foreach (['source', 'type', 'object_id'] as $key) {
 
 If you add a new token-keyed page where the Model returns a Data object under
 the same key, add that key to this list.
+
+### Forms with textareas — use form--stacked
+
+The default `form` layout is `display: flex; flex-wrap: wrap` (fields inline).
+Any form that contains a `<textarea>` must add `class="form--stacked"` to the
+`<form>` element so fields stack vertically and fill the full card width.
+
+When a stacked form has more than one action button (submit + cancel), wrap
+them in `<div class="form-actions">` to keep them on the same line.
+
+### Tables must be wrapped in .table-wrap
+
+Every `<table>` must be wrapped in `<div class="table-wrap">`. The wrapper
+provides the card styling (border-radius, box-shadow, overflow: hidden) and
+handles horizontal scrolling on narrow viewports. The `<table>` element itself
+has no card styles.
+
+```html
+<div class="table-wrap"><table>
+    ...
+</table></div>
+```
 
 ### Plugin constructor injection for testability
 
@@ -360,6 +428,13 @@ has the same risk.
 `config.ini` must point to a working database, otherwise sessions don't persist
 and every request redirects to login. SQLite is the easiest option for local dev.
 
+### Source and Type have a description field
+
+Both `Data\Source` and `Data\Type` have a nullable `?string $description`
+property mapped to a `TEXT` column. It is optional — null is stored when the
+admin leaves the field blank. Display it wherever the name is shown so users
+unfamiliar with the data can understand what a source or type represents.
+
 ---
 
 ## Making Changes
@@ -382,11 +457,18 @@ and every request redirects to login. SQLite is the easiest option for local dev
 
 ### Adding a new admin page
 
-1. Add the route to `public/index.php` under the `/admin` block.
-2. Add a Model in `src/Model/Admin/` (read data).
-3. Add an Action in `src/Action/Admin/` if you need to handle a POST.
-4. Add a View in `src/View/Admin/`.
-5. Wire the Model and View in the `Admin` controller and `Admin` Responder.
+The `/admin` route is a `starts_with` catch-all in `index.php` — no route
+change needed. Add the section slug to the four match arms:
+
+1. `Admin` controller — `getRequestActions()` and `getModels()`
+2. `Admin` Responder — `getView()`
+3. New `Model/Admin/MyList.php`, `Action/Admin/SaveMy.php`, `View/Admin/MyList.php`
+
+If the form contains a textarea, add `class="form--stacked"` to the `<form>`
+and wrap any multi-button row in `<div class="form-actions">`.
+Wrap the table in `<div class="table-wrap">`.
+Extend `AbstractCsrfAction` and implement `doCsrfAction()`.
+Add `_csrf_token` to the controller's POST filters if not already present.
 
 ### Adding a new history page / route token
 

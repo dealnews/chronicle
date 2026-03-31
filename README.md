@@ -62,7 +62,7 @@ psql -U user -d dbname -f schema/pgsql.sql
 sqlite3 path/to/dev.db < schema/sqlite.sql
 ```
 
-The schema creates six tables: `sources`, `types`, `logs`, `users`, `api_keys`, and `sessions`.
+The schema creates six tables: `chronicle_sources`, `chronicle_types`, `chronicle_logs`, `chronicle_users`, `chronicle_api_keys`, and `chronicle_sessions`.
 
 ## Configuration
 
@@ -304,7 +304,7 @@ On first launch, if no users exist in the database, Chronicle presents a one-tim
 
 ## Managing Log Table Size
 
-Chronicle writes a row to the `logs` table for every webhook event it receives and never deletes or archives anything on its own. As event volume grows, the table can become very large. Managing its size is entirely the responsibility of the operator.
+Chronicle writes a row to the `chronicle_logs` table for every webhook event it receives and never deletes or archives anything on its own. As event volume grows, the table can become very large. Managing its size is entirely the responsibility of the operator.
 
 The approaches below are common strategies. For production use, consult your database's official documentation before implementing any of them.
 
@@ -313,7 +313,7 @@ The approaches below are common strategies. For production use, consult your dat
 The simplest approach: run a scheduled job that deletes rows older than a retention window.
 
 ```sql
-DELETE FROM logs WHERE change_date < NOW() - INTERVAL 1 YEAR;
+DELETE FROM chronicle_logs WHERE change_date < NOW() - INTERVAL 1 YEAR;
 ```
 
 This works on all three supported databases (substitute `INTERVAL '1 year'` on PostgreSQL and SQLite). On large tables, `DELETE` can be slow and leaves behind dead rows that require a subsequent `VACUUM` (PostgreSQL) or `OPTIMIZE TABLE` (MySQL). Run during low-traffic periods and consider deleting in batches to reduce lock contention.
@@ -324,10 +324,10 @@ A variant is to delete by version count rather than age — keeping only the mos
 
 MySQL supports `RANGE` partitioning, which lets you drop an entire partition (e.g. one year's worth of rows) with a single fast metadata operation instead of a slow row-by-row `DELETE`.
 
-The `logs` table must be created as a partitioned table from the start. A yearly partition on `change_date` looks like:
+The `chronicle_logs` table must be created as a partitioned table from the start. A yearly partition on `change_date` looks like:
 
 ```sql
-CREATE TABLE `logs` (
+CREATE TABLE `chronicle_logs` (
     `log_id`      bigint unsigned NOT NULL AUTO_INCREMENT,
     `type_id`     bigint unsigned NOT NULL,
     `action`      enum('create','update','delete') NOT NULL DEFAULT 'create',
@@ -350,7 +350,7 @@ PARTITION BY RANGE COLUMNS(`change_date`) (
 To drop a partition and all its rows instantly:
 
 ```sql
-ALTER TABLE `logs` DROP PARTITION p2025;
+ALTER TABLE `chronicle_logs` DROP PARTITION p2025;
 ```
 
 For full details on creating, adding, and dropping partitions see the [MySQL Partitioning documentation](https://dev.mysql.com/doc/refman/8.4/en/partitioning.html).
@@ -360,7 +360,7 @@ For full details on creating, adding, and dropping partitions see the [MySQL Par
 PostgreSQL 10+ supports declarative range partitioning. Like MySQL, this is a schema-time decision — you cannot partition an existing regular table in place without recreating it.
 
 ```sql
-CREATE TABLE logs (
+CREATE TABLE chronicle_logs (
     log_id      BIGINT GENERATED ALWAYS AS IDENTITY,
     type_id     BIGINT NOT NULL,
     action      TEXT NOT NULL DEFAULT 'create' CHECK (action IN ('create', 'update', 'delete')),
@@ -373,17 +373,17 @@ CREATE TABLE logs (
     PRIMARY KEY (log_id, change_date)
 ) PARTITION BY RANGE (change_date);
 
-CREATE TABLE logs_2025
-    PARTITION OF logs
+CREATE TABLE chronicle_logs_2025
+    PARTITION OF chronicle_logs
     FOR VALUES FROM ('2025-01-01') TO ('2026-01-01');
 
-CREATE INDEX object_diffs ON logs (type_id, object_id, change_date);
+CREATE INDEX object_diffs ON chronicle_logs (type_id, object_id, change_date);
 ```
 
 Dropping a year's data is then a fast metadata operation:
 
 ```sql
-DROP TABLE logs_2025;
+DROP TABLE chronicle_logs_2025;
 ```
 
 The **pg_partman** extension can automate partition creation and retention so you don't have to manage the DDL manually. For full details see the [PostgreSQL Table Partitioning documentation](https://www.postgresql.org/docs/current/ddl-partitioning.html).

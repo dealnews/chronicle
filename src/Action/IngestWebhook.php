@@ -2,6 +2,8 @@
 
 namespace DealNews\Chronicle\Action;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use DealNews\Chronicle\Data\ApiKey;
 use DealNews\Chronicle\Data\Log;
 use DealNews\Chronicle\Data\Source;
@@ -14,6 +16,7 @@ use DealNews\Chronicle\Plugins\AbstractPlugin;
 use InvalidArgumentException;
 use PageMill\MVC\ActionAbstract;
 use RuntimeException;
+use Throwable;
 
 /**
  * Validates the incoming webhook request and persists a log entry.
@@ -119,12 +122,8 @@ class IngestWebhook extends ActionAbstract {
             return ['http_status' => 500];
         }
 
-        $change_date = $this->normalizeDate($plugin->getChangeDate());
-
-        if ($change_date === null) {
-            $this->errors[] = 'Plugin returned an unparseable change_date value.';
-            return ['http_status' => 400];
-        }
+        $change_date = $this->normalizeDate($plugin->getChangeDate())
+            ?? (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         $log->action      = $plugin->getAction() ?? 'update';
         $log->object_id   = $plugin->getObjectId();
@@ -141,19 +140,23 @@ class IngestWebhook extends ActionAbstract {
 
     /**
      * Normalizes a date string to the Y-m-d H:i:s format expected by the
-     * database. Returns null if the value cannot be parsed by strtotime().
+     * database, always stored in UTC. Returns null if the value is null or
+     * cannot be parsed.
      *
-     * @param  string $value Raw date string from the payload or plugin.
+     * @param  string|null $value Raw date string from the payload or plugin.
      * @return string|null
      */
-    protected function normalizeDate(string $value): ?string {
-        $timestamp = strtotime($value);
-
-        if ($timestamp === false) {
+    protected function normalizeDate(?string $value): ?string {
+        if ($value === null) {
+            return null;
+        }
+        try {
+            $dt = new DateTimeImmutable($value);
+        } catch (Throwable) {
             return null;
         }
 
-        return date('Y-m-d H:i:s', $timestamp);
+        return $dt->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s');
     }
 
     /**

@@ -66,7 +66,7 @@ class SessionHandlerTest extends TestCase {
 
         $crud->expects($this->once())
              ->method('update')
-             ->with('sessions', ['data' => 'new_data'], ['session_id' => 'abc'])
+             ->with('chronicle_sessions', ['data' => 'new_data'], ['session_id' => 'abc'])
              ->willReturn(true);
 
         $handler = new SessionHandler($crud);
@@ -82,7 +82,7 @@ class SessionHandlerTest extends TestCase {
 
         $crud->expects($this->once())
              ->method('create')
-             ->with('sessions', ['session_id' => 'new_id', 'data' => 'some_data'])
+             ->with('chronicle_sessions', ['session_id' => 'new_id', 'data' => 'some_data'])
              ->willReturn(true);
 
         $handler = new SessionHandler($crud);
@@ -97,7 +97,7 @@ class SessionHandlerTest extends TestCase {
 
         $crud->expects($this->once())
              ->method('delete')
-             ->with('sessions', ['session_id' => 'abc'])
+             ->with('chronicle_sessions', ['session_id' => 'abc'])
              ->willReturn(true);
 
         $handler = new SessionHandler($crud);
@@ -113,7 +113,7 @@ class SessionHandlerTest extends TestCase {
         $crud->expects($this->once())
              ->method('run')
              ->with(
-                 'DELETE FROM sessions WHERE updated_at < :expires',
+                 'DELETE FROM chronicle_sessions WHERE updated_at < :expires',
                  $this->callback(function (array $params): bool {
                      return isset($params[':expires']) &&
                             strtotime($params[':expires']) !== false;

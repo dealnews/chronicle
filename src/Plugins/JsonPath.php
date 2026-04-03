@@ -91,11 +91,11 @@ class JsonPath extends AbstractPlugin {
     }
 
     /**
-     * @return string
+     * @return string|null
      * @throws \RuntimeException If the config key or JSONPath result is missing.
      */
-    public function getChangeDate(): string {
-        return (string) $this->required('change_date');
+    public function getChangeDate(): ?string {
+        return (string) $this->required('change_date') ?: null;
     }
 
     /**

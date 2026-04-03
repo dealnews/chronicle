@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd9fee8d3e9fcf0c67ed1c8177622379",
+    "content-hash": "b735b91a9048d6638c8b6c11468f0528",
     "packages": [
         {
             "name": "dealnews/console",
@@ -711,16 +711,16 @@
         },
         {
             "name": "symfony/json-path",
-            "version": "v8.0.4",
+            "version": "v8.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/json-path.git",
-                "reference": "7bbb800421d905cc94f63d7d3e6af287ca7e09b5"
+                "reference": "e2e3a9e1a25bca2bc35188e832e7c6ae21ecc4ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/json-path/zipball/7bbb800421d905cc94f63d7d3e6af287ca7e09b5",
-                "reference": "7bbb800421d905cc94f63d7d3e6af287ca7e09b5",
+                "url": "https://api.github.com/repos/symfony/json-path/zipball/e2e3a9e1a25bca2bc35188e832e7c6ae21ecc4ab",
+                "reference": "e2e3a9e1a25bca2bc35188e832e7c6ae21ecc4ab",
                 "shasum": ""
             },
             "require": {
@@ -758,7 +758,7 @@
             "description": "Eases JSON navigation using the JSONPath syntax as described in RFC 9535",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/json-path/tree/v8.0.4"
+                "source": "https://github.com/symfony/json-path/tree/v8.0.8"
             },
             "funding": [
                 {
@@ -778,7 +778,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-05T10:43:37+00:00"
+            "time": "2026-03-30T15:14:47+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2647,5 +2647,5 @@
         "php": "^8.4"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

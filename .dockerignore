@@ -1,0 +1,9 @@
+.git
+.dev
+.dockerignore
+docker-compose.yml
+vendor
+etc/config.ini
+schema
+tests
+*.md
